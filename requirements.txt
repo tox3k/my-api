@@ -1,0 +1,14 @@
+annotated-types
+anyio
+fastapi
+uvicorn
+greenlet
+idna
+psycopg2-binary
+pydantic
+pydantic_core
+sniffio
+SQLAlchemy
+starlette
+typing-inspection
+typing_extensions
