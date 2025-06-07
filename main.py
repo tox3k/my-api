@@ -10,8 +10,7 @@ from sqlalchemy import or_
 from uuid import uuid4, UUID
 from typing import List, Union
 
-RUB_TICKER = "RUB"
-app = FastAPI()
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -26,7 +25,7 @@ async def lifespan(app: FastAPI):
         # ADMIN user
         admin = db.query(UserModel).filter_by(name="admin").first()
         if not admin:
-            api_key = uuid4()
+            api_key = "key-e4312979-3a6c-4eaf-b6a3-7a56a045f43f"
             admin = UserModel(name="admin", api_key=api_key, role=UserRole.ADMIN)
             db.add(admin)
             db.commit()
@@ -36,6 +35,9 @@ async def lifespan(app: FastAPI):
     finally:
         db.close()
     yield
+
+RUB_TICKER = "RUB"
+app = FastAPI(lifespan=lifespan)
 
 @app.post("/api/v1/public/register", response_model=UserSchema, tags=["public"], summary="Register", description="Регистрация пользователя в платформе.")
 async def register(new_user: NewUser, db: Session = Depends(get_db)):
