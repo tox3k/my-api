@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import or_
 from uuid import uuid4, UUID
 from typing import List, Union
-
+import time
 
 
 @asynccontextmanager
@@ -41,6 +41,7 @@ app = FastAPI(lifespan=lifespan)
 
 @app.post("/api/v1/public/register", response_model=UserSchema, tags=["public"], summary="Register", description="Регистрация пользователя в платформе.")
 async def register(new_user: NewUser, db: Session = Depends(get_db)):
+    time.sleep(0.2)
     api_key = f"key-{uuid4()}"
     user = UserModel(name=new_user.name, api_key=api_key, role=UserRole.USER)
     db.add(user)
