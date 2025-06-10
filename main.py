@@ -25,7 +25,7 @@ async def lifespan(app: FastAPI):
         # ADMIN user
         admin = db.query(UserModel).filter_by(name="admin").first()
         if not admin:
-            api_key = "key-e4312979-3a6c-4eaf-b6a3-7a56a045f43f"
+            api_key = "key-b0159a5b-531a-4358-b284-3b4d15c23dbd"
             admin = UserModel(name="admin", api_key=api_key, role=UserRole.ADMIN)
             db.add(admin)
             db.commit()
@@ -68,10 +68,10 @@ async def get_orderbook(ticker: str, limit: int = 10, db: Session = Depends(get_
 
     return L2OrderBook(bid_levels=bid_levels, ask_levels=ask_levels)
 
-# @app.get("/api/v1/public/transactions/{ticker}", response_model=list[TransactionSchema], tags=["public"], summary="Get Transaction History", description="История сделок")
-# async def get_transaction_history(ticker: str, limit: int = 10, db: Session = Depends(get_db)):
-    # txs = db.query(TransactionModel).filter_by(ticker=ticker).order_by(TransactionModel.timestamp.desc()).limit(limit).all()
-    # return [TransactionSchema.from_orm(tx) for tx in txs]
+@app.get("/api/v1/public/transactions/{ticker}", response_model=list[TransactionSchema], tags=["public"], summary="Get Transaction History", description="История сделок")
+async def get_transaction_history(ticker: str, limit: int = 10, db: Session = Depends(get_db)):
+    txs = db.query(TransactionModel).filter_by(ticker=ticker).order_by(TransactionModel.timestamp.desc()).limit(limit).all()
+    return [TransactionSchema.from_orm(tx) for tx in txs]
 
 
 @app.get("/api/v1/balance", tags=["balance"], summary="Get Balances", response_model=dict)
